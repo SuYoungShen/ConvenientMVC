@@ -18,7 +18,7 @@ class Convenient extends CI_Controller {
         echo "<pre>";
         var_dump($data["PB"]);
         echo "</pre>";
-
+      
         $data['title'] = '便當系統';
         $data["home"] = anchor(base_url('convenient/'), "C","class='navbar-brand'");
         $data["footer"] = "<p>By: &copy; Your Website 2014</p>";
