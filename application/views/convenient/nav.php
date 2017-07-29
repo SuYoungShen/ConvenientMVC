@@ -25,7 +25,7 @@
           <li>
             <button class="btn btn-danger">
               <h4>
-                所剩餘額：<?php //echo $PB["Balance"];?>元
+                所剩餘額：<?php echo $PB["Balance"];?>元
 
                 <?php
                 // echo "所剩餘額：".$ShowBalance[$BalanceCount-1]["Balance"]."元";
@@ -73,7 +73,7 @@
                   ?>
                   <li><?php echo $member_center;//會員中心網址?></li>
                   <li role='separator' class='divider'></li>
-                  <li><a href='login.html'>登出</a></li>
+                  <li><a href='../login/TRUE'>登出</a></li>
                 </ul>
               </div>
             </li>

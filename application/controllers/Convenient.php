@@ -9,24 +9,13 @@ class Convenient extends CI_Controller {
               $this->load->helper(array('html', 'url', 'form'));
               $this->load->library('session');
       }
-
-      public function index()
-      {
-
-
-        $data["PB"] = $this->con_mondel->Personal_Balance();//會員餘額PB = Personal_Balance
-        echo "<pre>";
-        var_dump($data["PB"]);
-        echo "</pre>";
-      
-        $data['title'] = '便當系統';
-        $data["home"] = anchor(base_url('convenient/'), "C","class='navbar-brand'");
-        $data["footer"] = "<p>By: &copy; Your Website 2014</p>";
-
+      public function login($status){
+        if ($status == TRUE) {
+          $this->session->sess_destroy();
+        }
+        $data['title'] = '登入';
         $meta = $this->meta();
         $data["meta"] = meta($meta);
-
-        $data["member_center"] = anchor(base_url('convenient/center/'), "會員中心");
 
         $css = $this->css();//css引入檔案
         foreach ($css as $key => $value) {
@@ -38,55 +27,156 @@ class Convenient extends CI_Controller {
           $data["js"][$key] = script_tag($value);
         }
 
-        $form = array(
+        $FormLogin = array(
+                      "id" => "loginform",
                       "class" => "form-horizontal"
         );
-        $data["form"]["form"] = form_open(base_url('convenient/insert/'), $form);
-        $data["form"]["TodayStoreName"] = "C";//店家名
+        $data["form"]["FormLogin"] = form_open(base_url('convenient/CheckLogin/'), $FormLogin);
 
-        $data["form"]["IHTodayID"] = form_hidden("TodayID");//input type="hidden" 店家ID
-        $data["form"]["TodayStorePhone"] = "123";//店家電話
-
-        $img = array(
-                      "class" => "img-responsive",
-                      "src" => "http://www.fanchuan.com.tw/templates/cache/946/images/products/photooriginal-946-9448.JPG"
-                    );
-
-        $data["form"]["Img"] = img($img);
-
-        $data["form"]["Description"] = "123木頭人";//說明
-
-        $select = array(
-                        "a+60" => "a+60",
-                        "b+50" => "b+50"
-        );
-        $data["form"]["Select"] = form_dropdown("cp",$select,'',"class='selectpicker' id='cp' title='便當+價位' data-style='btn-warning'");//便當的下拉
-
-        $number = array(
-                        "type" => "number",
+        $account = array(
+                        "type" => "text",
                         "class" => "form-control",
-                        "name" => "number",
-                        "id" => "number",
-                        "placeholder" => "請輸入數量",
+                        "name" => "account",
+                        "id" => "login-username",
+                        "placeholder" => "請輸入帳號",
                         "required" => "required"
         );
-        $data["form"]["InputNumber"] = form_input($number);//數量
+        $data["form"]["Account"] = form_input($account);//帳號
+
+        $password = array(
+                        "type" => "password",
+                        "class" => "form-control",
+                        "name" => "password",
+                        "id" => "login-password",
+                        "placeholder" => "請輸入密碼",
+                        "required" => "required"
+        );
+        $data["form"]["Password"] = form_input($password);//密碼
+
+        $submit = array(
+                        "type" => "submit",
+                        "class" => "btn btn-success",
+                        "id" => "btn-login",
+                        "value" => "登入",
+                        "required" => "required"
+        );
+        $data["form"]["submit"] = form_submit($submit);
+
+        $data["form"]["sign"] = anchor(base_url("convenient/login/#"), "註冊會員", array("onClick"=>"$('#loginbox').hide();$('#signupbox').show()"));
+
+        $data["form"]["login"] = anchor(base_url("convenient/login/#"), "返回登入頁面", array("id" => "signinlink","onClick"=>"$('#signupbox').hide(); $('#loginbox').show()"));
+
+        $FormSign = array(
+                      "id" => "signupform",
+                      "class" => "form-horizontal"
+        );
+        $data["form"]["FormSign"] = form_open(base_url('convenient/Registered/'), $FormSign);
 
         $name = array(
                         "type" => "text",
                         "class" => "form-control",
                         "name" => "name",
-                        "id" => "name",
-                        "placeholder" => "(抓取會員名)",
+                        "placeholder" => "請輸入姓名",
                         "required" => "required"
         );
+        $data["form"]["Name"] = form_input($name);//姓名
 
-        $data["form"]["InputName"] = form_input($name);//姓名
+        $sign = array(
+                        "type" => "submit",
+                        "class" => "btn btn-info",
+                        "id" => "btn-signup",
+                        "value" => "註冊",
+                        "required" => "required"
+        );
+        $data["form"]["SubmitSign"] = form_submit($sign);
 
         $this->load->view('convenient/header', $data);
-        $this->load->view('convenient/body');
-        $this->load->view('convenient/footer');
+        $this->load->view('convenient/login');
+      }
 
+      public function CheckLogin(){
+        $account = $this->input->post('account');//使用者輸入的帳號
+        $password = $this->input->post('password');//使用者輸入的密碼
+        $this->con_mondel->CheckLogin($account, $password);//檢查等入狀態
+      }
+
+      public function Order()//訂購頁面
+      {
+        if (!empty($this->session->tempdata())) {//判斷SESSION如果不等於空的話就跳到訂購頁面
+
+          $data["PB"] = $this->con_mondel->Personal_Balance();//會員餘額PB = Personal_Balance
+
+          $data['title'] = '便當系統';
+          $data["home"] = anchor(base_url('convenient/'), "C","class='navbar-brand'");
+          $data["footer"] = "<p>By: &copy; Your Website 2014</p>";
+
+          $meta = $this->meta();
+          $data["meta"] = meta($meta);
+
+          $data["member_center"] = anchor(base_url('convenient/center/'), "會員中心");
+
+          $css = $this->css();//css引入檔案
+          foreach ($css as $key => $value) {
+            $data["css"][$key] = link_tag($value);
+          }
+
+          $js = $this->js();//js引入檔案
+          foreach ($js as $key => $value) {
+            $data["js"][$key] = script_tag($value);
+          }
+
+          $form = array(
+                        "class" => "form-horizontal"
+          );
+          $data["form"]["TodayStoreName"] = "C";//店家名
+          $data["form"]["form"] = form_open(base_url('convenient/insert/'), $form);
+
+          $data["form"]["IHTodayID"] = form_hidden("TodayID");//input type="hidden" 店家ID
+          $data["form"]["TodayStorePhone"] = "123";//店家電話
+
+          $img = array(
+                        "class" => "img-responsive",
+                        "src" => "http://www.fanchuan.com.tw/templates/cache/946/images/products/photooriginal-946-9448.JPG"
+                      );
+
+          $data["form"]["Img"] = img($img);
+
+          $data["form"]["Description"] = "123木頭人";//說明
+
+          $select = array(
+                          "a+60" => "a+60",
+                          "b+50" => "b+50"
+          );
+          $data["form"]["Select"] = form_dropdown("cp",$select,'',"class='selectpicker' id='cp' title='便當+價位' data-style='btn-warning'");//便當的下拉
+
+          $number = array(
+                          "type" => "number",
+                          "class" => "form-control",
+                          "name" => "number",
+                          "id" => "number",
+                          "placeholder" => "請輸入數量",
+                          "required" => "required"
+          );
+          $data["form"]["InputNumber"] = form_input($number);//數量
+
+          $name = array(
+                          "type" => "text",
+                          "class" => "form-control",
+                          "name" => "name",
+                          "id" => "name",
+                          "placeholder" => "(抓取會員名)",
+                          "required" => "required"
+          );
+
+          $data["form"]["InputName"] = form_input($name);//姓名
+
+          $this->load->view('convenient/header', $data);
+          $this->load->view('convenient/body');
+          $this->load->view('convenient/footer');
+
+        }else{
+          redirect("convenient/login/TRUE");//轉到登入頁面
+        }
       }
 
       protected function meta(){
@@ -126,6 +216,10 @@ class Convenient extends CI_Controller {
                 ),
                 array(
                   "href" => "assets/css/bootstrap-select.min.css",
+                  "rel" => "stylesheet"
+                ),
+                array(
+                  "href" => "assets/css/font-awesome.min.css",
                   "rel" => "stylesheet"
                 )
         );
@@ -169,7 +263,6 @@ class Convenient extends CI_Controller {
       // echo  $cp = $this->input->post(array("number",'name'));
       // echo  $number = $this->input->post("number");
       // echo  $name = $this->input->input_stream("name", TRUE);
-
 
       }
 
