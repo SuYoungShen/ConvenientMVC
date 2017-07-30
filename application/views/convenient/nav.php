@@ -73,7 +73,7 @@
                   ?>
                   <li><?php echo $member_center;//會員中心網址?></li>
                   <li role='separator' class='divider'></li>
-                  <li><a href='../login/TRUE'>登出</a></li>
+                  <li><a href='../SignOut/'>登出</a></li>
                 </ul>
               </div>
             </li>

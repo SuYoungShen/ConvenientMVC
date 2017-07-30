@@ -6,13 +6,17 @@ class Convenient extends CI_Controller {
               parent::__construct();
               $this->load->model('con_mondel');
               // $this->load->model('news_model');
-              $this->load->helper(array('html', 'url', 'form'));
-              $this->load->library('session');
+              $this->load->helper(array('html', 'url', 'form', 'date'));
+              $this->load->library(array('session'));
       }
-      public function login($status){
-        if ($status == TRUE) {
-          $this->session->sess_destroy();
-        }
+
+      public function SignOut(){//登出
+        $this->session->sess_destroy();
+        redirect("convenient/login/");//轉到登入頁
+      }
+
+      public function login(){//登入
+
         $data['title'] = '登入';
         $meta = $this->meta();
         $data["meta"] = meta($meta);
@@ -37,9 +41,9 @@ class Convenient extends CI_Controller {
                         "type" => "text",
                         "class" => "form-control",
                         "name" => "account",
-                        "id" => "login-username",
-                        "placeholder" => "請輸入帳號",
-                        "required" => "required"
+                        "id" => "login-account",
+                        "placeholder" => "請輸入帳號"
+                        ,"required" => "required"
         );
         $data["form"]["Account"] = form_input($account);//帳號
 
@@ -47,7 +51,7 @@ class Convenient extends CI_Controller {
                         "type" => "password",
                         "class" => "form-control",
                         "name" => "password",
-                        "id" => "login-password",
+                        "id" => "password",
                         "placeholder" => "請輸入密碼",
                         "required" => "required"
         );
@@ -75,11 +79,31 @@ class Convenient extends CI_Controller {
         $name = array(
                         "type" => "text",
                         "class" => "form-control",
-                        "name" => "name",
+                        "name" => "username",
+                        "id" => "username",
                         "placeholder" => "請輸入姓名",
                         "required" => "required"
         );
         $data["form"]["Name"] = form_input($name);//姓名
+
+        $passwords = array(
+                        "type" => "password",
+                        "class" => "form-control",
+                        "name" => "passwords",
+                        "id" => "passwords",
+                        "placeholder" => "請輸入密碼",
+                        "required" => "required"
+        );
+        $data["form"]["Passwords"] = form_input($passwords);//密碼
+        $AgainPassword = array(
+                        "type" => "password",
+                        "class" => "form-control",
+                        "name" => "confirm_password",
+                        "id" => "confirm_password",
+                        "placeholder" => "請再次輸入密碼",
+                        "required" => "required"
+        );
+        $data["form"]["AgainPassword"] = form_input($AgainPassword);//再次輸入密碼
 
         $sign = array(
                         "type" => "submit",
@@ -94,10 +118,36 @@ class Convenient extends CI_Controller {
         $this->load->view('convenient/login');
       }
 
-      public function CheckLogin(){
+      public function CheckLogin(){//檢查登入
+        $account = $this->input->post('account');//使用者輸入的姓名
+        $password = $this->input->post('password');//使用者輸入的密碼
+        $level = $this->con_mondel->CheckLogin($account, $password);//檢查等入狀態
+        if ($level == "member") {
+          redirect("convenient/Order/");//轉到訂購頁面
+        }
+      }
+
+      public function Registered(){
+        $name = $this->input->post('name');//使用者輸入的帳號
         $account = $this->input->post('account');//使用者輸入的帳號
         $password = $this->input->post('password');//使用者輸入的密碼
-        $this->con_mondel->CheckLogin($account, $password);//檢查等入狀態
+
+        if (!empty($name) || !empty($account) || !empty($password)) {
+          date_default_timezone_set("Asia/Taipei");//設定時區
+          $now = time();//抓取現在系統時間
+          $datetime = unix_to_human($now, TRUE, 'en'); // 美規時間秒數顯示
+          $How = $this->con_mondel->Registered($name, $account, $password, $datetime);//檢查等入狀態
+
+          if ($How == true) {
+            echo "<script>alert('註冊成功');</script>";
+            $this->output->set_header("refresh: 0.1;url='../login'");//轉到登入頁面
+          }else {
+            echo "<script>alert('註冊失敗');</script>";
+            $this->output->set_header("refresh: 0.1;url='../login'");//轉到登入頁面
+          }
+        }else {
+          echo "string";
+        }
       }
 
       public function Order()//訂購頁面
@@ -107,7 +157,7 @@ class Convenient extends CI_Controller {
           $data["PB"] = $this->con_mondel->Personal_Balance();//會員餘額PB = Personal_Balance
 
           $data['title'] = '便當系統';
-          $data["home"] = anchor(base_url('convenient/'), "C","class='navbar-brand'");
+          $data["home"] = anchor(base_url('convenient/'), "C", "class='navbar-brand'");
           $data["footer"] = "<p>By: &copy; Your Website 2014</p>";
 
           $meta = $this->meta();
@@ -175,7 +225,7 @@ class Convenient extends CI_Controller {
           $this->load->view('convenient/footer');
 
         }else{
-          redirect("convenient/login/TRUE");//轉到登入頁面
+          redirect("convenient/login/");//轉到登入頁面
         }
       }
 
@@ -243,11 +293,11 @@ class Convenient extends CI_Controller {
                   "type" => "text/javascript"
                 ),
                 array(
-                  "src" => "assets/js/messages_zh.js",
+                  "src" => "assets/js/form.validate.js",
                   "type" => "text/javascript"
                 ),
                 array(
-                  "src" => "assets/js/form_validate.js",
+                  "src" => "assets/js/messages_zh.js",
                   "type" => "text/javascript"
                 ),
                 array(
@@ -258,13 +308,6 @@ class Convenient extends CI_Controller {
         return $js;
       }//end js
       //js引入檔案
-
-      public function insert(){
-      // echo  $cp = $this->input->post(array("number",'name'));
-      // echo  $number = $this->input->post("number");
-      // echo  $name = $this->input->input_stream("name", TRUE);
-
-      }
 
       public function center(){
         $data['title'] = '會員中心';

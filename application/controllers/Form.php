@@ -2,26 +2,27 @@
 
 class Form extends CI_Controller {
 
-        public function index()
+    public function index()
+    {
+        $this->load->helper(array('form', 'url'));
+
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('username', 'Username', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required',
+            array('required' => 'You must provide a %s.')
+        );
+        $this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required');
+
+        if ($this->form_validation->run() == FALSE)
         {
-          $this->load->database();
-
-					$this->load->helper(array('html','url'));
-          // $a = array(
-          //             array("src"=>"css/css.css"),
-          //             array("src"=>"css/csss.css")
-          //           );
-          // foreach ($a as $key => $value) {
-          //   $data["css_local"][$key] = link_tag($value["src"]);
-          // }
-
-          // $q = $this->db->get("news");
-          $q = $this->db->get("news")->result_array();
-          // $this->db->delete('news', array('id' => '4'));
-
-          $d["a"] = $q;
-          $this->load->view("myform.php",$d);
+            $this->load->view('myform');
         }
-
-
+        else
+        {
+            $this->load->view('formsuccess');
+        }
+    }
 }
+?>

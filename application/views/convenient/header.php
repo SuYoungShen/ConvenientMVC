@@ -12,4 +12,9 @@
         echo $value;
       }
       ?>
+      <style>
+        .error{
+          color : red;
+        }
+      </style>
   </head>

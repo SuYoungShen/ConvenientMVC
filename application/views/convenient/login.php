@@ -20,6 +20,7 @@
           <div style="margin-bottom: 25px" class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
             <?php echo $form["Password"]; ?>
+
           </div>
 
           <div class="input-group">
@@ -78,7 +79,7 @@
             </div>
 
             <div class="form-group">
-              <label for="account number" class="col-md-3 control-label">帳號</label>
+              <label for="account" class="col-md-3 control-label">帳號</label>
               <div class="col-md-9">
                 <!-- <input type="text" class="form-control" name="accountnumber" placeholder="account number"> -->
                 <?php echo $form["Account"]; ?>
@@ -88,14 +89,14 @@
               <label for="password" class="col-md-3 control-label">密碼</label>
               <div class="col-md-9">
                 <!-- <input type="password" class="form-control" name="password" placeholder="password"> -->
-                <?php echo $form["Password"]; ?>
+                <?php echo $form["Passwords"]; ?>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="lastname" class="col-md-3 control-label">驗證碼</label>
+              <label for="AgainPassword" class="col-md-3 control-label">再輸入一次密碼</label>
               <div class="col-md-9">
-                <input type="text" class="form-control" name="lastname" placeholder="lastname">
+                <?php echo $form["AgainPassword"]; ?>
               </div>
             </div>
 
