@@ -33,8 +33,18 @@
           </thead>
           <tbody>
             <?php
-              //include 'center/Deposit.php';//存款頁面
-             ?>
+              foreach ($PDD as $key => $value) {//個人存款明細
+                $Deposit = $value["Deposit"];//存款金額
+                $DDatetime  = $value["DDatetime"];//存款日期
+                echo "
+                <tr>
+                <td>".$this->session->tempdata('login_name')."</td>
+                <td>$Deposit</td>
+                <td>$DDatetime</td>
+                </tr>
+                ";
+              }
+            ?>
           </tbody>
         </table>
       </div>
@@ -52,8 +62,19 @@
           </thead>
           <tbody>
             <?php
-              //include 'center/Balance.php';
-             ?>
+              foreach ($PBD as $key => $value) {//個人餘額明細
+
+                $Balances = $value["Balance"];//餘額
+                $BDatetime  = $value["BDatetime"];//餘額日期
+                echo "
+                <tr>
+                <td>".$this->session->tempdata('login_name')."</td>
+                <td>$Balances</td>
+                <td>$BDatetime</td>
+                </tr>
+                ";
+              }
+            ?>
           </tbody>
         </table>
       </div>
@@ -74,8 +95,26 @@
           </thead>
           <tbody>
             <?php
-            //  include 'center/BeforeConvenient.php';
-             ?>
+              foreach ($PBCD as $key => $value) {//曾經訂購過的便當明細
+
+                $STodayStore = $value["STodayStore"];//店家名
+                $SConvenient  = $value["SConvenient"];//便當
+                $SPrice  = $value["SPrice"];//價位
+                $SQuantity  = $value["SQuantity"];//數量
+                $STotal  = $value["STotal"];//總價
+                $SDatetimes  = $value["SDatetimes"];//日期
+                echo "
+                <tr>
+                <td>".$this->session->tempdata('login_name')."</td>
+                <td>$STodayStore</td>
+                <td>$SConvenient+$SPrice</td>
+                <td>$SQuantity</td>
+                <td>$STotal</td>
+                <td>$SDatetimes</td>
+                </tr>
+                ";
+              }
+            ?>
           </tbody>
         </table>
       </div>

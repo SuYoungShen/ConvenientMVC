@@ -10,6 +10,15 @@ class Convenient extends CI_Controller {
               $this->load->library(array('session'));
       }
 
+      public function index()
+      {
+        if (!empty($this->session->tempdata())) {//判斷SESSION如果不等於空的話就跳到訂購頁面
+          redirect("convenient/Order/");//轉到訂購
+        }else {
+          redirect("convenient/login/");//轉到登入頁
+        }
+      }
+
       public function SignOut(){//登出
         $this->session->sess_destroy();
         redirect("convenient/login/");//轉到登入頁
@@ -291,11 +300,13 @@ class Convenient extends CI_Controller {
                 array(
                   "src" => "assets/js/jquery.validate.min.js",
                   "type" => "text/javascript"
-                ),
+                )
+                ,
                 array(
-                  "src" => "assets/js/form.validate.js",
+                  "src" => "assets/js/forms.validate.js",
                   "type" => "text/javascript"
-                ),
+                )
+                ,
                 array(
                   "src" => "assets/js/messages_zh.js",
                   "type" => "text/javascript"
@@ -310,27 +321,36 @@ class Convenient extends CI_Controller {
       //js引入檔案
 
       public function center(){
-        $data['title'] = '會員中心';
-        $data["home"] = anchor(base_url('convenient/'), "首頁","class='navbar-brand'");
-        $data["footer"] = "<p>By: &copy; Your Website 2014</p>";
-        $meta = $this->meta();
-        $data["meta"] = meta($meta);
+        if (!empty($this->session->tempdata())) {//判斷SESSION如果不等於空的話就跳到訂購頁面
+          $data['title'] = '會員中心';
+          $data["home"] = anchor(base_url('convenient/'), "首頁","class='navbar-brand'");
+          $data["footer"] = "<p>By: &copy; Your Website 2014</p>";
+          $meta = $this->meta();
+          $data["meta"] = meta($meta);
 
-        $data["member_center"] = anchor(base_url('convenient/change'), "更改密碼");
+          $data["member_center"] = anchor(base_url('convenient/change'), "更改密碼");
 
-        $css = $this->css();//css引入檔案
-        foreach ($css as $key => $value) {
-          $data["css"][$key] = link_tag($value);
+          $css = $this->css();//css引入檔案
+          foreach ($css as $key => $value) {
+            $data["css"][$key] = link_tag($value);
+          }
+
+          $js = $this->js();//js引入檔案
+          foreach ($js as $key => $value) {
+            $data["js"][$key] = script_tag($value);
+          }
+          $data["PB"] = $this->con_mondel->Personal_Balance();//會員餘額PB = Personal_Balance
+          $data["PDD"] = $this->con_mondel->Personal_Deposit_Details();//個人存款明細PDD = Personal_Deposit_Details
+          $data["PBD"] = $this->con_mondel->Personal_Balance_Details();//個人餘額明細PBD = Personal_Balance_Details
+          $data["PBCD"] = $this->con_mondel->Personal_BC_Details();//個人曾經訂購過的便當明細BC = Before Convenient
+
+
+          $this->load->view('convenient/header', $data);
+          $this->load->view('convenient/center');
+          $this->load->view('convenient/footer',$data);
+        }else {
+          redirect("convenient/login/");//轉到登入頁面
         }
-
-        $js = $this->js();//js引入檔案
-        foreach ($js as $key => $value) {
-          $data["js"][$key] = script_tag($value);
-        }
-
-        $this->load->view('convenient/header', $data);
-        $this->load->view('convenient/center');
-        $this->load->view('convenient/footer',$data);
       }
 
 }

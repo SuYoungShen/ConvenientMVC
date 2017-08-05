@@ -23,13 +23,13 @@
 
           </div>
 
-          <div class="input-group">
+          <!-- <div class="input-group">
             <div class="checkbox">
               <label>
                 <input id="login-remember" type="checkbox" name="remember" value="1">記住我
               </label>
             </div>
-          </div>
+          </div> -->
 
           <div style="margin-top:10px" class="form-group">
             <!-- Button -->
