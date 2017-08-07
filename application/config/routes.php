@@ -59,6 +59,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // $route['(:any)'] = 'pages/view/$1';
 // $route['default_controller'] = 'pages/view';
 $route['default_controller'] = 'convenient';
-// $route['default_controller'] = 'convenient/';
+$route['bc'] = 'bc';
 // $route['convenient'] = 'convenient';
 // $route['form'] = 'form';
