@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機: localhost
--- 產生時間： 2017-06-17 13:57:08
+-- 產生時間： 2017-08-10 15:13:59
 -- 伺服器版本: 5.7.17-log
 -- PHP 版本： 5.6.30
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- 資料庫： `convenient`
 --
-CREATE DATABASE IF NOT EXISTS `convenient` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `convenient`;
 
 -- --------------------------------------------------------
 
@@ -43,7 +41,21 @@ INSERT INTO `balance` (`BalanceID`, `Balance`, `BDatetime`, `MemberID`) VALUES
 (9, 100, '2017-05-01 00:00:00', 1),
 (11, 120, '2017-05-02 00:00:00', 1),
 (12, 100, '2017-05-03 00:00:00', 1),
-(13, 103, '2017-05-04 00:00:00', 1);
+(13, 59, '2017-05-04 00:00:00', 6);
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `convenient`
+--
+
+CREATE TABLE `convenient` (
+  `id` int(10) NOT NULL,
+  `StoreName` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `Convenient` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `Price` int(10) NOT NULL,
+  `Datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -65,7 +77,7 @@ CREATE TABLE `deposit` (
 INSERT INTO `deposit` (`DepositID`, `Deposit`, `DDatetime`, `MemberID`) VALUES
 (1, 100, '2017-05-01 00:00:00', 1),
 (2, 20, '2017-05-02 00:00:00', 1),
-(3, 3, '2017-05-04 00:00:00', 1);
+(3, 103, '2017-05-04 00:00:00', 6);
 
 -- --------------------------------------------------------
 
@@ -87,11 +99,12 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`MemberID`, `MemberName`, `MemberAccount`, `MemberPassword`, `MemberLevel`, `MemberDatetime`) VALUES
-(1, 'a', 'aa', 'aaa', 'member', '0000-00-00 00:00:00'),
-(6, 'b', 'bb', '', 'member', '0000-00-00 00:00:00'),
-(7, 'ㄋ', 'ssss', 'ssss', 'member', '0000-00-00 00:00:00'),
-(8, 'ㄇ', 'ㄇ', 'aa', 'member', '0000-00-00 00:00:00'),
-(9, '湧盛', 'young', 'young', 'admin', '0000-00-00 00:00:00');
+(1, 'AaB', 'aa', 'aaa', 'member', '0000-00-00 00:00:00'),
+(6, '小王', 'bb', 'bbb', 'member', '0000-00-00 00:00:00'),
+(7, 'aA!', 'ssss', 'ssss', 'member', '0000-00-00 00:00:00'),
+(8, '你小王八', 'ㄇ', 'aa', 'member', '0000-00-00 00:00:00'),
+(9, '小多', 'young', 'young', 'admin', '0000-00-00 00:00:00'),
+(10, '洪瑞展', '1234', '123456', 'member', '2017-08-07 22:00:22');
 
 -- --------------------------------------------------------
 
@@ -110,18 +123,6 @@ CREATE TABLE `selectmembers` (
   `SDatetimes` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- 資料表的匯出資料 `selectmembers`
---
-
-INSERT INTO `selectmembers` (`SMID`, `SConvenient`, `SPrice`, `SQuantity`, `STotal`, `SM`, `STodayStore`, `SDatetimes`) VALUES
-(29, '雞排', 20, 0, 0, 1, 18, '2017-05-01 00:00:00'),
-(31, '雞腿', 20, 0, 0, 1, 20, '2017-05-02 00:00:00'),
-(32, '雞排', 20, 0, 0, 1, 21, '2017-05-03 00:00:00'),
-(45, '噁心', 30, 1, 30, 1, 18, '0000-00-00 00:00:00'),
-(46, '噁心', 30, 1, 30, 1, 18, '0000-00-00 00:00:00'),
-(47, '噁心', 30, 1, 30, 1, 18, '2017-06-02 22:33:33');
-
 -- --------------------------------------------------------
 
 --
@@ -134,19 +135,8 @@ CREATE TABLE `stores` (
   `StorePhone` int(10) NOT NULL,
   `StoreDescription` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `StorePic` text COLLATE utf8_unicode_ci NOT NULL,
-  `StoreConvenient` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `SCPrice` int(10) NOT NULL,
   `StoreDatetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 資料表的匯出資料 `stores`
---
-
-INSERT INTO `stores` (`StoreID`, `StoreName`, `StorePhone`, `StoreDescription`, `StorePic`, `StoreConvenient`, `SCPrice`, `StoreDatetime`) VALUES
-(13, 'a', 0, 'aa', 'http://www.railway-bento.com.tw/wp-content/uploads/2013/10/014%E6%BB%B7%E9%A6%99%E9%9B%9E%E8%85%BF%E9%A3%AF.jpg', '雞腿', 10, '0000-00-00 00:00:00'),
-(14, 'b', 1, 'bb', 'http://2.bp.blogspot.com/-cxUwl5Oz0T0/VnqsHm5gbMI/AAAAAAAAE3w/nOv5stQ5E9A/s1600/IMG_0930.jpg', '雞排', 20, '0000-00-00 00:00:00'),
-(16, 'c', 2, 'cc', 'http://www.fanchuan.com.tw/templates/cache/946/images/products/photooriginal-946-9448.JPG', '噁心', 30, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -162,15 +152,6 @@ CREATE TABLE `todaymenu` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- 資料表的匯出資料 `todaymenu`
---
-
-INSERT INTO `todaymenu` (`TodayID`, `TodayStoreName`, `TodayStorePhone`, `TodayDatetime`) VALUES
-(18, 'a', 0, '0000-00-00 00:00:00'),
-(20, 'b', 1, '0000-00-00 00:00:00'),
-(21, 'c', 0, '0000-00-00 00:00:00');
-
---
 -- 已匯出資料表的索引
 --
 
@@ -180,6 +161,15 @@ INSERT INTO `todaymenu` (`TodayID`, `TodayStoreName`, `TodayStorePhone`, `TodayD
 ALTER TABLE `balance`
   ADD PRIMARY KEY (`BalanceID`),
   ADD KEY `MemberID` (`MemberID`);
+
+--
+-- 資料表索引 `convenient`
+--
+ALTER TABLE `convenient`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `StoreName` (`StoreName`),
+  ADD KEY `Convenient` (`Convenient`),
+  ADD KEY `Price` (`Price`);
 
 --
 -- 資料表索引 `deposit`
@@ -212,8 +202,7 @@ ALTER TABLE `selectmembers`
 ALTER TABLE `stores`
   ADD PRIMARY KEY (`StoreID`),
   ADD KEY `StoreName` (`StoreName`),
-  ADD KEY `StroePhone` (`StorePhone`),
-  ADD KEY `StoreConvenient` (`StoreConvenient`);
+  ADD KEY `StroePhone` (`StorePhone`);
 
 --
 -- 資料表索引 `todaymenu`
@@ -233,6 +222,11 @@ ALTER TABLE `todaymenu`
 ALTER TABLE `balance`
   MODIFY `BalanceID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
+-- 使用資料表 AUTO_INCREMENT `convenient`
+--
+ALTER TABLE `convenient`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+--
 -- 使用資料表 AUTO_INCREMENT `deposit`
 --
 ALTER TABLE `deposit`
@@ -241,22 +235,22 @@ ALTER TABLE `deposit`
 -- 使用資料表 AUTO_INCREMENT `members`
 --
 ALTER TABLE `members`
-  MODIFY `MemberID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `MemberID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- 使用資料表 AUTO_INCREMENT `selectmembers`
 --
 ALTER TABLE `selectmembers`
-  MODIFY `SMID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `SMID` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- 使用資料表 AUTO_INCREMENT `stores`
 --
 ALTER TABLE `stores`
-  MODIFY `StoreID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `StoreID` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- 使用資料表 AUTO_INCREMENT `todaymenu`
 --
 ALTER TABLE `todaymenu`
-  MODIFY `TodayID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `TodayID` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- 已匯出資料表的限制(Constraint)
 --
@@ -266,6 +260,14 @@ ALTER TABLE `todaymenu`
 --
 ALTER TABLE `balance`
   ADD CONSTRAINT `MemberID_2` FOREIGN KEY (`MemberID`) REFERENCES `members` (`MemberID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 資料表的 Constraints `convenient`
+--
+ALTER TABLE `convenient`
+  ADD CONSTRAINT `Convenient` FOREIGN KEY (`Convenient`) REFERENCES `selectmembers` (`SConvenient`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Price` FOREIGN KEY (`Price`) REFERENCES `selectmembers` (`SPrice`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `StoreName` FOREIGN KEY (`StoreName`) REFERENCES `stores` (`StoreName`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 資料表的 Constraints `deposit`
