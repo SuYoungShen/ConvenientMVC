@@ -26,7 +26,7 @@
                 </div>
                 <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div class="panel-body">
-                    <form action="./InNewMenu/" method="post" role="form">
+                    <form action="./bc/InNewStore/" method="post" role="form">
 
                       <div class="form-group">
                         <label>店家名</label>
@@ -67,14 +67,20 @@
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div class="panel-body">
-                    <form action="./InNewMenu/" method="post" role="form">
-
+                    <form action="bc/InNewMenw/" method="post" role="form">
                       <div class="form-group">
                         <label>店家名</label>
-                        <input type="text" class="form-control" name="new_store_name" placeholder="請輸入店家">
-                        <!-- new_store_name 店家名 -->
+                        <select class="selectpicker" name="new_store_name">
+                          <optgroup label="店家名">
+                          <?php
+                            foreach ($StoreName as $key => $value){
+                              echo "<option>".$value['StoreName']."</option>";
+                            }
+                          ?>
+                          </optgroup>
+                        </select>
                       </div>
-
+                      <!-- new_store_name 店家名 -->
                       <div class="form-group">
                         <label>電話</label>
                         <input type="number" class="form-control" name="new_phone_number" placeholder="請輸入電話">
@@ -86,12 +92,6 @@
                         <textarea class="form-control" name="new_description" placeholder="請說明"></textarea>
                       </div>
                       <!-- new_description 說明 -->
-
-                      <div class="form-group">
-                        <label>店家圖片上傳</label>
-                        <input type="url" name="new_pices_file" class="form-control">
-                        <!-- new_pices_file 照片 -->
-                      </div>
 
                       <div class="form-group">
                         <div class="input_fields_wrap">

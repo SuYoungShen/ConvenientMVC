@@ -6,25 +6,43 @@ class Bc_mondel extends CI_Model {
     $this->load->database();
   }
 
-  public function InNewMenu($StoreName, $StorePhone, $Description, $Pic, $datetime)
+  public function AllStores()//全部店家名
   {
+      return $Se = $this->db->select('StoreName')->get($this->db->protect_identifiers("stores"));
+  }
 
-        $data = array(
-          'StoreName' => $StoreName,
-          'StorePhone' => $StorePhone,
-          'StoreDescription' => $Description,
-          'StorePic' => $Pic,
-          'StoreDatetime' => $datetime
-        );
+  protected function SeStores($StoreName)//特定
+  {
+      return $Se = $this->db->select('StoreName')->get_where($this->db->protect_identifiers("stores"), array("StoreName" => $StoreName));
+  }
 
-      $How = $this->db->insert("stores", $data);
+  public function InNewStore($StoreName, $StorePhone, $Description, $Pic, $datetime)
+  {
+    $Se = $this->SeStores($StoreName);//先查詢店家名
+    $How = $Se->row();//取值
+
+    if ($How == NULL) {//等於null的話表示無此店家
+
+      $data = array(
+           'StoreName' => $StoreName,
+           'StorePhone' => $StorePhone,
+           'StoreDescription' => $Description,
+           'StorePic' => $Pic,
+           'StoreDatetime' => $datetime
+         );
+
+       $How = $this->db->insert("stores", $data);
 
 
-    if ($How == true) {//判斷是否新增成功
-      return $How;
+     if ($How == true) {//判斷是否新增成功
+       return $How;
+     }else {
+       return $How;
+     }
     }else {
-      return $How;
+      return False;
     }
+
   }
 
   public function Personal_Balance(){//查詢個人餘額

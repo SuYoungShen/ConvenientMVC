@@ -21,12 +21,13 @@
       foreach ($js as $key => $value) {
         $data["js"][$key] = script_tag($value);
       }
+      $data["StoreName"] = $this->bc_mondel->AllStores()->result_array();//店家名
 
       $this->load->view('convenient/header', $data);
       $this->load->view('convenient/bcs/body');
     }
 
-    public function InNewMenu(){//新增新菜單
+    public function InNewStore(){//新增店家
 
       $StoreName = $this->input->post("new_store_name");//店家名
       $StorePhone = $this->input->post("new_phone_number");//電話
@@ -43,9 +44,23 @@
           if ($How == true) {
             echo "<script>alert('新增成功');</script>";
             $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到登入頁面
+          }else {
+            echo "<script>alert('已經有此店家囉~~~');</script>";
+            $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到登入頁面
           }
       }
     }
+
+    public function InNewMenw()
+    {
+      // $StoreName = $this->input->post('new_store_name');//店家名
+      $PNumber = $this->input->post('new_phone_number');//電話
+      $Description = $this->input->post('new_description');//說明
+      $Convenient = $this->input->post('new_convenient');//便當
+      $Price = $this->input->post('new_price');//價位
+
+    }
+
 
     protected function bcmeta(){
       $meta = array(
