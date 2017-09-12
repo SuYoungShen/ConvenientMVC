@@ -4,7 +4,7 @@
     public function __construct(){
       parent::__construct();
       $this->load->helper(array('html', 'url', 'form', 'date'));
-      $this->load->model("bc_mondel");
+      $this->load->model("bc_mondel");      
     }
 
     public function index(){
@@ -43,15 +43,15 @@
           $How = $this->bc_mondel->InNewStore($StoreName, $StorePhone, $Description, $Pic, $datetime);//把資料丟到model做資料庫處理
           if ($How == true) {
             echo "<script>alert('新增成功');</script>";
-            $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到登入頁面
+            $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到
           }else {
             echo "<script>alert('已經有此店家囉~~~');</script>";
-            $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到登入頁面
+            $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到
           }
       }
     }
 
-    public function InNewMenw()
+    public function InNewMenw()//新增菜單
     {
       // $StoreName = $this->input->post('new_store_name');//店家名
       $PNumber = $this->input->post('new_phone_number');//電話
@@ -61,6 +61,31 @@
 
     }
 
+    public function TodayMenu()//本日菜單
+    {
+      $Today_StoreName = $this->input->post('today_storeName');//本日菜單店家名選擇後
+      $TSN_data = $this->bc_mondel->TodaySeStore($Today_StoreName)->result_array();//TSN=Today_StoreName,把選擇後的店家名放到bc_mondel->SeStoress做資料查詢
+      $response['StoreDescription'] = $TSN_data[0]["StoreDescription"];//選擇店家名的說明
+      $response['StorePic'] =  $TSN_data[0]["StorePic"];//選擇店家名的照片
+      echo json_encode($response);//將資料轉換為json格式
+    }
+
+    public function InTodayMenu()//新增本日菜單
+    {
+      $Today_StoreName = $this->input->post('today_storeName');//本日菜單店家名選擇後
+      date_default_timezone_set("Asia/Taipei");//設定時區
+      $now = time();//抓取現在系統時間
+      $datetime = unix_to_human($now, TRUE, 'en'); // 美規時間秒數顯示
+
+      $TSN_data = $this->bc_mondel->InTodayStore($Today_StoreName, $datetime);//TSN=Today_StoreName,把選擇後的店家名放到bc_mondel->SeStoress做資料查詢
+      if ($TSN_data == TRUE) {
+        echo "<script>alert('新增成功');</script>";
+        $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到
+      }else {
+        echo "<script>alert('新增失敗');</script>";
+        $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到
+      }
+    }
 
     protected function bcmeta(){
       $meta = array(
@@ -161,8 +186,12 @@
                           "src" => "assets/js/defaults-zh_TW.min.js",
                           "type" => "text/javascript"
                         ),
-                        array(
+                      array(
                           "src" => "assets/js/add_field_button.js",
+                          "type" => "text/javascript"
+                        ),
+                      array(
+                          "src" => "assets/js/today_menu.js",
                           "type" => "text/javascript"
                         )
                       );

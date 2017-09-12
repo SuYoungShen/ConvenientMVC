@@ -11,9 +11,25 @@ class Bc_mondel extends CI_Model {
       return $Se = $this->db->select('StoreName')->get($this->db->protect_identifiers("stores"));
   }
 
-  protected function SeStores($StoreName)//特定
+  protected function SeStores($StoreName)//用在InNewStore
   {
       return $Se = $this->db->select('StoreName')->get_where($this->db->protect_identifiers("stores"), array("StoreName" => $StoreName));
+  }
+
+  public function TodaySeStore($StoreName)//用在TodayMenu,本日菜單選擇店家名後,做資料查詢
+  {
+      return $Se = $this->db->select('StoreDescription, StorePic')->get_where($this->db->protect_identifiers("stores"), array("StoreName" => $StoreName));
+  }
+
+  public function InTodayStore($StoreName, $datetime)
+  {
+      $data = array(
+           'TodayStoreName' => $StoreName,
+           'TodayDatetime' => $datetime
+         );
+
+      $How = $this->db->insert("todaymenu", $data);
+      return $How;
   }
 
   public function InNewStore($StoreName, $StorePhone, $Description, $Pic, $datetime)
@@ -42,7 +58,6 @@ class Bc_mondel extends CI_Model {
     }else {
       return False;
     }
-
   }
 
   public function Personal_Balance(){//查詢個人餘額

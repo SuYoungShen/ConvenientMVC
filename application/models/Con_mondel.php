@@ -15,7 +15,7 @@ class Con_mondel extends CI_Model {
       return  $SB->last_row('array');//回傳最後一筆資料,傳回陣列
     }
 
-    public function CheckLogin($account, $password){
+    public function CheckLogin($account, $password){//檢查登入
 
       $SM =
       $this->db->select("MemberID, MemberName, MemberAccount, MemberPassword, MemberLevel")->

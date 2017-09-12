@@ -26,7 +26,7 @@
                 </div>
                 <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                   <div class="panel-body">
-                    <form action="./bc/InNewStore/" method="post" role="form">
+                    <form action="./InNewStore/" method="post" role="form">
 
                       <div class="form-group">
                         <label>店家名</label>
@@ -118,27 +118,26 @@
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                   <div class="panel-body">
-                    <form role="form" action="../../test.php" method="post">
+                    <form role="form" action="./bc/InTodayMenu/" method="post">
                       <div class="form-group">
                         <label>店家名</label>
-                        <select class="selectpicker" name="today_storeName">
-                          <optgroup label="Picnic">
-                            <option>a</option>
-                            <option>Relish</option>
-                          </optgroup>
-                          <optgroup label="Camping">
-                            <option>Tent</option>
-                            <option>Flashlight</option>
-                            <option>Toilet Paper</option>
+                        <select class="selectpicker" id="today_storeName" name="today_storeName">
+                          <optgroup label="店家名">
+                          <?php
+                            foreach ($StoreName as $key => $value){
+                              $StoreNames = $value["StoreName"];
+                              echo "<option value='$StoreNames'>".$StoreNames."</option>";
+                            }
+                          ?>
                           </optgroup>
                         </select>
                       </div>
 
                       <div class="form-group">
                         <label>說明</label>
-                        <p class="h5">test test test</p>
+                        <p class="h5" id='StoreDescription'></p>
                       </div>
-                    <img src="http://www.people.com.cn/mediafile/pic/20150216/85/15606292194463751861.jpg" class="img-responsive img-rounded" >
+                    <img id="StorePic" src="http://www.people.com.cn/mediafile/pic/20150216/85/15606292194463751861.jpg" class="img-responsive img-rounded" >
                     <br>
                       <button type="submit" class="btn btn-success" name="today_store_name">送出</button>
                     </form>
