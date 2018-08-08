@@ -118,7 +118,7 @@
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                   <div class="panel-body">
-                    <form role="form" action="./bc/InTodayMenu/" method="post">
+                    <form role="form" action = './InTodayMenu/'  method="post">
                       <div class="form-group">
                         <label>店家名</label>
                         <select class="selectpicker" id="today_storeName" name="today_storeName">
@@ -145,12 +145,12 @@
                 </div>
               </div>
               <div class="panel panel-success">
-                <div class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <div class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse " data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                   <h4 class="panel-title">
                       總菜單
                   </h4>
                 </div>
-                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
                   <div class="panel-body">
                     <!-- /.row -->
                     <div class="row">
@@ -159,22 +159,20 @@
                           <!-- /.panel-heading -->
                           <div class="panel-body">
 
-                            <form role="form" action="../../test.php" method="post">
+                            <form role="form" action="" method="post">
                               <div class="form-group">
                                 <label>店家名</label>
-                                <select class="selectpicker" name="select_store_name">
-                                  <optgroup label="Picnic">
-                                    <option value="a">Mustard</option>
-                                    <option>Ketchup</option>
-                                    <option>Relish</option>
-                                  </optgroup>
-                                  <optgroup label="Camping">
-                                    <option>Tent</option>
-                                    <option>Flashlight</option>
-                                    <option>Toilet Paper</option>
+                                <select class="selectpicker" id="select_store_name" name="select_store_name">
+                                  <optgroup label="店家名">
+                                  <?php
+                                    foreach ($StoreName as $key => $value){
+                                      $StoreNames = $value["StoreName"];
+                                      echo "<option value='$StoreNames'>".$StoreNames."</option>";
+                                    }
+                                  ?>
                                   </optgroup>
                                 </select>
-                                <h5>電話:</h5>
+                                <h5 id="phone"></h5>
                               </div>
 
                               <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -188,11 +186,11 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <tr class="odd gradeX">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 4.0</td>
-                                    <td>Win 95+</td>
-                                    <td class="center">4</td>
+                                  <!-- <tr class="odd gradeX">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="center"></td>
                                     <td class="center">
                                       <span
                                       class="fa fa-pencil-square-o" aria-hidden="true"
@@ -205,28 +203,8 @@
                                       data-target="#Delete" style="color:red">
                                       </span>
                                     </td>
-                                  </tr>
-                                  <tr class="even gradeC">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 5.0</td>
-                                    <td>Win 95+</td>
-                                    <td class="center">5</td>
-                                    <td class="center">C</td>
-                                  </tr>
-                                  <tr class="odd gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 5.5</td>
-                                    <td>Win 95+</td>
-                                    <td class="center">5.5</td>
-                                    <td class="center">A</td>
-                                  </tr>
-                                  <tr class="even gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 6</td>
-                                    <td>Win 98+</td>
-                                    <td class="center">6</td>
-                                    <td class="center">A</td>
-                                  </tr>
+                                  </tr> -->
+
                                 </tbody>
                               </table>
                               <!-- /.table-responsive -->
@@ -257,7 +235,7 @@
                                       <div class="form-group">
                                         <label class="control-label col-sm-2" for="StoreConvenint">便當</label>
                                         <div class="col-sm-10">
-                                          <input type="text" class="form-control" id="StoreConvenint" placeholder="請輸入便當" name="StoreConvenint">
+                                          <input type="text" class="form-control" id="StoreConvenint" placeholder="請輸入便當" name="StoreConvenint" value="">
                                         </div>
                                       </div>
                                       <div class="form-group">

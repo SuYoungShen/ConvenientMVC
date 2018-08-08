@@ -4,7 +4,7 @@
     public function __construct(){
       parent::__construct();
       $this->load->helper(array('html', 'url', 'form', 'date'));
-      $this->load->model("bc_mondel");      
+      $this->load->model("bc_mondel");
     }
 
     public function index(){
@@ -79,13 +79,33 @@
 
       $TSN_data = $this->bc_mondel->InTodayStore($Today_StoreName, $datetime);//TSN=Today_StoreName,把選擇後的店家名放到bc_mondel->SeStoress做資料查詢
       if ($TSN_data == TRUE) {
-        echo "<script>alert('新增成功');</script>";
-        $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到
+        echo "<script>alert('送出成功');</script>";
+        $this->output->set_header("refresh: 0.1;url='../../bc/'");
       }else {
-        echo "<script>alert('新增失敗');</script>";
-        $this->output->set_header("refresh: 0.1;url='../../bc'");//轉到
+        echo "<script>alert('送出失敗');</script>";
+        $this->output->set_header("refresh: 0.1;url='../../bc/'");
       }
     }
+
+    public function TotalMenu()//總菜單
+    {
+      $Today_StoreName = $this->input->post('select_store_names');//本日菜單店家名選擇後
+      $TSN_data = $this->bc_mondel->TotalMenu($Today_StoreName);//TSN=Today_StoreName,把選擇後的店家名放到bc_mondel->TotalMenu做資料查詢
+      $response[0]["Phone"] = $TSN_data[0][0]["StorePhone"];//電話
+      // echo "<pre>";
+      // var_dump($TSN_data);
+      // echo "</pre>";
+      // echo count($TSN_data[1]);
+      if (!empty($TSN_data[1])) {
+        for ($i=0; $i < count($TSN_data[1]); $i++) {
+          $response[$i]['Convenient'] = $TSN_data[1][$i]["Convenient"];//選擇店家名的便當
+          $response[$i]['Price'] =  $TSN_data[1][$i]["Price"];//選擇店家名的價位
+          $response[$i]['Datetime'] =  $TSN_data[1][$i]["Datetime"];//選擇店家名的價位
+        }
+      }
+      echo json_encode($response);//將資料轉換為json格式
+    }
+
 
     protected function bcmeta(){
       $meta = array(

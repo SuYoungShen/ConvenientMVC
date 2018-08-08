@@ -18,10 +18,20 @@ class Bc_mondel extends CI_Model {
 
   public function TodaySeStore($StoreName)//用在TodayMenu,本日菜單選擇店家名後,做資料查詢
   {
-      return $Se = $this->db->select('StoreDescription, StorePic')->get_where($this->db->protect_identifiers("stores"), array("StoreName" => $StoreName));
+      $Se = $this->db->select('StoreDescription, StorePic')->get_where($this->db->protect_identifiers("stores"), array("StoreName" => $StoreName));
+
+      return $Se;
   }
 
-  public function InTodayStore($StoreName, $datetime)
+  public function TotalMenu($StoreName)//用在TodayMenu,本日菜單選擇店家名後,做資料查詢
+  {
+      $SeStores = $this->db->select('StorePhone')->get_where($this->db->protect_identifiers("stores"), array("StoreName" => $StoreName))->result_array();
+      $SeConvenient = $this->db->select('Convenient, Price, Datetime')->get_where($this->db->protect_identifiers("convenient"), array("StoreName" => $StoreName))->result_array();
+      $SeTotal = array($SeStores, $SeConvenient);
+      return $SeTotal;
+  }
+
+  public function InTodayStore($StoreName, $datetime)//送出今天的店家
   {
       $data = array(
            'TodayStoreName' => $StoreName,
